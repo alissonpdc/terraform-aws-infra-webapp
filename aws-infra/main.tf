@@ -22,4 +22,4 @@ provider "aws" {
       folder     = "aws-infra"
     }
   }
-} 
+}

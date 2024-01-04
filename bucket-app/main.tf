@@ -23,3 +23,13 @@ provider "aws" {
     }
   }
 } 
+
+# Obtem output do state de outro remote state do terraform
+# data "terraform_remote_state" "app_bucket_arn" {
+#   backend = "s3"
+#   config = {
+#     bucket = "alissonpdc-terraform-remote-state-bucket"
+#     key    = "terraform-aws-infra-stack/bucket-app/terraform.tfstate"
+#     region = "us-east-1"
+#   }
+# }
