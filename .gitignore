@@ -15,6 +15,12 @@ crash.*.log
 # Plan OUT
 *.out
 
+# EC2 key pair
+ec2-key*
+
+# Provisioners txt
+*.txt
+
 # Exclude all .tfvars files, which are likely to contain sensitive data, such as
 # password, private keys, and other secrets. These should not be part of version 
 # control as they are data points which are potentially sensitive and subject 
