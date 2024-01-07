@@ -10,7 +10,7 @@ variable "ec2_instance_type" {
   type        = string
 }
 
-variable "vpc_instances_cidr" {
+variable "vpc_app_cidr" {
   description = "VPC for Instances"
   default     = "10.0.0.0/16"
   type        = string
