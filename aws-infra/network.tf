@@ -14,26 +14,19 @@ resource "aws_internet_gateway" "gw_app" {
   }
 }
 
-resource "aws_eip" "eip_ngw" {
+resource "aws_eip" "eip_ngw_app" {
+  for_each = aws_subnet.subnets_public
   domain   = "vpc"
-}
-
-resource "aws_nat_gateway" "nat_gw_app" {
-  for_each = aws_subnet.subnets_private_app
-  # allocation_id = aws_eip.example.id
-  subnet_id = each.value.id
 
   tags = {
-    Name = "${each.key}-ngw"
+    Name = "${each.key}-eip-ngw"
   }
-  depends_on = [
-    aws_internet_gateway.gw_app
-  ]
 }
-resource "aws_nat_gateway" "nat_gw_db" {
-  for_each = aws_subnet.subnets_private_db
-  # allocation_id = aws_eip.example.id
-  subnet_id = each.value.id
+
+resource "aws_nat_gateway" "ngws_app" {
+  for_each = aws_subnet.subnets_public
+  allocation_id = aws_eip.eip_ngw_app[each.key].allocation_id
+  subnet_id = aws_subnet.subnets_public[each.key].id
 
   tags = {
     Name = "${each.key}-ngw"
@@ -90,28 +83,17 @@ resource "aws_route_table" "route_table_public" {
 }
 
 
-# resource "aws_route_table" "route_table_private_app" {
-#   vpc_id = aws_vpc.vpc_app.id
+resource "aws_route_table" "route_tables_private_app" {
+  for_each = var.subnets_public
+  vpc_id = aws_vpc.vpc_app.id
 
-#   route {
-#     cidr_block = "0.0.0.0/0"
-#     gateway_id = aws_internet_gateway.example.id
-#   }
+  route {
+    cidr_block = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.ngws_app[each.key].id
+  }
 
-#   tags = {
-#     Name = "public-route-table"
-#   }
-# }
-# resource "aws_route_table" "route_table_public" {
-#   vpc_id = aws_vpc.vpc_app.id
-
-#   route {
-#     cidr_block = "0.0.0.0/0"
-#     gateway_id = aws_internet_gateway.example.id
-#   }
-
-#   tags = {
-#     Name = "public-route-table"
-#   }
-# }
-
+  tags = {
+    #todo: fix name using 'public-1a' instead of 'private-1a'
+    Name = "${each.key}-route-table"
+  }
+}
