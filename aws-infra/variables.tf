@@ -4,9 +4,15 @@ variable "enable_multi_az" {
   default = false
 }
 
+variable "enable_nat_gateway" {
+  description = "Boolean flag to enable nat gateway deployment"
+  type = bool
+  default = false
+}
+
 variable "ec2_ami" {
   description = "EC2 AMI ID"
-  default     = "ami-079db87dc4c10ac91"
+  default     = "ami-0ea6ebeab50b26cee"
   type        = string
 }
 
@@ -15,6 +21,10 @@ variable "ec2_instance_type" {
   default     = "t2.micro"
   type        = string
 }
+
+
+
+
 
 variable "vpc_app_cidr" {
   description = "VPC for Instances"

@@ -17,7 +17,7 @@ resource "aws_internet_gateway" "gw_app" {
 resource "aws_eip" "eip_ngw_app" {
   for_each = {
     for k, v in var.subnets_public : k => v
-    if (var.enable_multi_az == true || strcontains("${k}", "1a"))
+    if (var.enable_multi_az == true || strcontains("${k}", "1a")) && var.enable_nat_gateway == true
   }
 
   domain   = "vpc"
@@ -29,7 +29,7 @@ resource "aws_eip" "eip_ngw_app" {
 resource "aws_nat_gateway" "ngws_app" {
   for_each = {
     for k, v in var.subnets_public : k => v
-    if (var.enable_multi_az == true || strcontains("${k}", "1a"))
+    if (var.enable_multi_az == true || strcontains("${k}", "1a")) && var.enable_nat_gateway == true
   }
 
   allocation_id = aws_eip.eip_ngw_app[each.key].allocation_id
@@ -99,7 +99,7 @@ resource "aws_route_table" "route_table_public" {
 resource "aws_route_table" "route_tables_private_app" {
   for_each = {
     for k, v in var.subnets_private_app : k => v
-    if (var.enable_multi_az == true || strcontains("${k}", "1a"))
+    if (var.enable_multi_az == true || strcontains("${k}", "1a")) && var.enable_nat_gateway == true
   }
 
   vpc_id = aws_vpc.vpc_app.id
@@ -126,7 +126,7 @@ resource "aws_route_table_association" "route_table_associations_public" {
 resource "aws_route_table_association" "route_table_associations_private" {
   for_each = {
     for k, v in var.subnets_private_app : k => v
-    if (var.enable_multi_az == true || strcontains("${k}", "1a"))
+    if (var.enable_multi_az == true || strcontains("${k}", "1a")) && var.enable_nat_gateway == true
   }
 
   subnet_id      = aws_subnet.subnets_private_app[each.key].id
