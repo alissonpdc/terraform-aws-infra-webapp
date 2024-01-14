@@ -2,8 +2,7 @@ resource "aws_launch_template" "eks_launch_template" {
   name          = "eks-launch-template"
   image_id      = var.eks_worker_node_ami
   instance_type = var.eks_worker_node_type
-  # key_name      = aws_key_pair.key_worker_node.key_name
-  user_data     = data.template_file.bootstrap_script.rendered
+  user_data     = base64encode(data.template_file.bootstrap_script.rendered)
 
   network_interfaces {
     associate_public_ip_address = false

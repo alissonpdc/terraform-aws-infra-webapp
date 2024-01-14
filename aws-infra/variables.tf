@@ -1,29 +1,35 @@
 variable "enable_multi_az" {
-  description = "Boolean flag to enable multi-az deployment"
+  description = "Boolean flag to enable Multi-AZ deployment"
   type        = bool
   default     = false
 }
 
 variable "enable_nat_gateway" {
-  description = "Boolean flag to enable nat gateway deployment"
+  description = "Boolean flag to enable Nat Gateway deployment"
   type        = bool
   default     = false
 }
 
 variable "enable_eks" {
-  description = "Boolean flag to enable nat gateway deployment"
+  description = "Boolean flag to enable EKS deployment"
   type        = bool
   default     = false
 }
 
 variable "enable_bastion_host" {
-  description = "Boolean flag to enable nat gateway deployment"
+  description = "Boolean flag to enable Bastion Host deployment"
   type        = bool
   default     = false
 }
 
 variable "enable_network" {
-  description = "Boolean flag to enable nat gateway deployment"
+  description = "Boolean flag to enable Network deployment"
+  type        = bool
+  default     = false
+}
+
+variable "enable_rds" {
+  description = "Boolean flag to enable RDS deployment"
   type        = bool
   default     = false
 }

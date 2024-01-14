@@ -4,7 +4,7 @@ resource "aws_instance" "bastion" {
   ami                    = "ami-0005e0cfe09cc9050"
   instance_type          = "t2.micro"
   vpc_security_group_ids = [aws_security_group.sg_bastion[count.index].id]
-  key_name               = aws_key_pair.key_bastion[count.index].key_name
+  # key_name               = aws_key_pair.key_bastion[count.index].key_name
   subnet_id              = aws_subnet.subnets_public["public-1a"].id
 
   tags = {
@@ -39,11 +39,11 @@ resource "aws_security_group" "sg_bastion" {
   }
 }
 
-resource "aws_key_pair" "key_bastion" {
-  count      = var.enable_bastion_host == true ? 1 : 0
-  key_name   = "bastion-key"
-  public_key = file("./bastion-key-mac.pub")
-}
+# resource "aws_key_pair" "key_bastion" {
+#   count      = var.enable_bastion_host == true ? 1 : 0
+#   key_name   = "bastion-key"
+#   public_key = file("./bastion-key-desktop.pub")
+# }
 
 resource "aws_eip" "eip_bastion" {
   count    = var.enable_bastion_host == true ? 1 : 0
