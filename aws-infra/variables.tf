@@ -1,22 +1,41 @@
 variable "enable_multi_az" {
   description = "Boolean flag to enable multi-az deployment"
-  type = bool
-  default = false
+  type        = bool
+  default     = false
 }
 
 variable "enable_nat_gateway" {
   description = "Boolean flag to enable nat gateway deployment"
-  type = bool
-  default = false
+  type        = bool
+  default     = false
 }
 
-variable "ec2_ami" {
+variable "enable_eks" {
+  description = "Boolean flag to enable nat gateway deployment"
+  type        = bool
+  default     = false
+}
+
+variable "enable_bastion_host" {
+  description = "Boolean flag to enable nat gateway deployment"
+  type        = bool
+  default     = false
+}
+
+variable "enable_network" {
+  description = "Boolean flag to enable nat gateway deployment"
+  type        = bool
+  default     = false
+}
+
+
+variable "eks_worker_node_ami" {
   description = "EC2 AMI ID"
   default     = "ami-0ea6ebeab50b26cee"
   type        = string
 }
 
-variable "ec2_instance_type" {
+variable "eks_worker_node_type" {
   description = "EC2 Instance Type"
   default     = "t2.micro"
   type        = string
