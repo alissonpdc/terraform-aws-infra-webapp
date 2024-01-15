@@ -1,6 +1,11 @@
+resource "random_password" "db_password" {
+  length           = 8
+  special          = false
+}
+
 resource "aws_db_instance" "db_instance" {
   allocated_storage   = 10
-  db_name             = "appdb"
+  db_name             = aws_ssm_parameter.db_name
   engine              = "postgres"
   instance_class      = "db.t3.micro"
   username            = aws_ssm_parameter.db_username.value
@@ -15,13 +20,25 @@ resource "aws_db_instance" "db_instance" {
 resource "aws_ssm_parameter" "db_username" {
   name  = "/RDS/db_username"
   type  = "String"
-  value = "appdb"
+  value = var.db_username
 }
 
 resource "aws_ssm_parameter" "db_password" {
   name  = "/RDS/db_password"
   type  = "SecureString"
-  value = "MyDbPassword"
+  value = random_password.db_password.result
+}
+
+resource "aws_ssm_parameter" "db_endpoint" {
+  name  = "/RDS/db_endpoint"
+  type  = "String"
+  value = aws_db_instance.db_instance.endpoint
+}
+
+resource "aws_ssm_parameter" "db_name" {
+  name  = "/RDS/db_name"
+  type  = "String"
+  value = var.db_name
 }
 
 resource "aws_db_subnet_group" "db_subnet_group" {
