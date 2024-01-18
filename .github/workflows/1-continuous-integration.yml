@@ -18,7 +18,7 @@ jobs:
       - uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: us-east-1
-          role-to-assume: ${{ secrets.AWS_OIDC_ROLE }} 
+          role-to-assume: "${{ secrets.AWS_OIDC_ROLE }}"
 
       - name: Terraform Validate
         run : | 
@@ -28,4 +28,4 @@ jobs:
       - name: Terraform Plan
         run : | 
           terraform plan -out plan.out
-          aws s3 cp plan.out s3://${{ secrets.AWS_BUCKET_REMOTE_STATE }}/terraform-aws-infra-webapp/
+          aws s3 cp plan.out s3://"${{ secrets.AWS_BUCKET_REMOTE_STATE }}"/terraform-aws-infra-webapp/
