@@ -32,7 +32,7 @@ jobs:
       - TFlint
     steps:
       - uses: actions/checkout@v3
-      
+
       - uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: us-east-1
@@ -61,4 +61,5 @@ jobs:
       - name: Terraform Plan
         run : | 
           cd terraform
+          terraform init
           terraform plan -input=false

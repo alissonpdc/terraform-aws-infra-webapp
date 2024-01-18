@@ -22,6 +22,7 @@ jobs:
       - name: Terraform Plan
         run : | 
           cd terraform
+          terraform init
           terraform plan -out plan.out -input=false
       
       - name: Upload plan.out
