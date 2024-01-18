@@ -32,6 +32,7 @@ jobs:
       - TFlint
     steps:
       - uses: actions/checkout@v3
+      
       - uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: us-east-1
@@ -42,3 +43,22 @@ jobs:
           cd terraform
           terraform init -input=false
           terraform validate -no-color
+
+  TerraformPlan:
+    runs-on: ubuntu-latest
+    environment: terraform-aws-infra-webapp-secrets-env
+    needs:
+      - TFlint
+      - TerraformValidate
+    steps:
+      - uses: actions/checkout@v3
+      
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-1
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE }}
+
+      - name: Terraform Plan
+        run : | 
+          cd terraform
+          terraform plan -input=false

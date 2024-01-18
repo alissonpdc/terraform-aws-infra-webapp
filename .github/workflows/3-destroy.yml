@@ -32,6 +32,8 @@ jobs:
   TerraformDestroy:
     runs-on: ubuntu-latest
     environment: terraform-aws-infra-webapp-secrets-env
+    needs: 
+      - TerraformPlan
     steps:
       - uses: actions/checkout@v3
 
