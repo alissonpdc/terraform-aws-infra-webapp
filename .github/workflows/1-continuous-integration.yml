@@ -23,10 +23,13 @@ jobs:
 
       - name: Terraform Validate
         run : | 
+          ls -la
           cd terraform
+          ls -ls
+          pwd
           terraform init
           terraform validate
       - name: Terraform Plan
         run : | 
           terraform plan -out plan.out
-          aws s3 cp plan.out s3://"${{ secrets.AWS_BUCKET_REMOTE_STATE }}"/terraform-aws-infra-webapp/
+          aws s3 cp plan.out s3://alissonpdc-terraform-remote-state-bucket/terraform-aws-infra-webapp/
