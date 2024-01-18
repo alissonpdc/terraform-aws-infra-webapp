@@ -11,19 +11,21 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  ValidateAndPlan:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: us-east-1
-          role-to-assume: arn:aws:iam::211125453026:role/github-oidc-auth-Role-mVCfrIMPaYfi 
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE }} 
 
       - name: Terraform Validate
         run : | 
           cd terraform
           terraform init
           terraform validate
-          terraform plan -o plan.out
-          aws s3 cp plan.out s3://alissonpdc-terraform-remote-state-bucket/terraform-aws-infra-webapp/
+      - name: Terraform Plan
+        run : | 
+          terraform plan -out plan.out
+          aws s3 cp plan.out s3://${{ secrets.AWS_BUCKET_REMOTE_STATE }}/terraform-aws-infra-webapp/
