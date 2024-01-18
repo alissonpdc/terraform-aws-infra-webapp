@@ -101,5 +101,5 @@ jobs:
           eksctl get iamidentitymapping --cluster eks-cluster --region=us-east-1
 
           echo "==> Printing aws-auth"
-          kubectl edit -n kube-system configmap/aws-auth
+          kubectl get configmap/aws-auth -o yaml -n kube-system 
         
