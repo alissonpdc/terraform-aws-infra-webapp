@@ -24,10 +24,12 @@ jobs:
         run : | 
           cd terraform
           terraform tflint
-          
+
   ValidateAndPlan:
     runs-on: ubuntu-latest
     environment: terraform-aws-infra-webapp-secrets-env
+    needs: 
+      - TFlint
     steps:
       - uses: actions/checkout@v3
       - uses: aws-actions/configure-aws-credentials@v4
