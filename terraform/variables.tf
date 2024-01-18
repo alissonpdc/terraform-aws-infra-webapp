@@ -45,6 +45,21 @@
 # }
 
 
+
+variable "aws_default_region" {
+  description = "value"
+  type        = string
+  default     = "us-east-1"
+}
+variable "enable_network" {
+  description = "value"
+  type        = bool
+}
+variable "enable_eks" {
+  description = "value"
+  type        = bool
+}
+
 ########################################
 ##           NETWORK VARIABLES        ##
 ########################################
