@@ -1,0 +1,28 @@
+name: "[3] DESTROY"
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  DestroyAWS:
+    runs-on: ubuntu-latest
+    environment: terraform-aws-infra-webapp-secrets-env
+    steps:
+      - uses: actions/checkout@v3
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-1
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE }}
+
+      - name: Download plan.out
+        run : | 
+          echo "==> Downloading plan.out from S3 Bucket"
+          aws s3api get-object --bucket alissonpdc-terraform-remote-state-bucket --key terraform-aws-infra-webapp/plan.out plan.out
+
+      - name: Terraform Destroy
+        run : | 
+          terraform destroy plan.out
+        
