@@ -11,6 +11,20 @@ permissions:
   contents: read
 
 jobs:
+  TFlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install tflint
+        run: |
+          curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
+
+      - name: Terraform Lint 
+        run : | 
+          cd terraform
+          terraform tflint
+          
   ValidateAndPlan:
     runs-on: ubuntu-latest
     environment: terraform-aws-infra-webapp-secrets-env
@@ -23,13 +37,11 @@ jobs:
 
       - name: Terraform Validate
         run : | 
-          ls -la
           cd terraform
-          ls -ls
-          pwd
-          terraform init
-          terraform validate
+          terraform init -input=false
+          terraform validate -no-color
       - name: Terraform Plan
         run : | 
-          terraform plan -out plan.out
+          cd terraform
+          terraform plan -out plan.out -input=false
           aws s3 cp plan.out s3://alissonpdc-terraform-remote-state-bucket/terraform-aws-infra-webapp/

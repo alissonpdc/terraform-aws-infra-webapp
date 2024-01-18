@@ -6,19 +6,19 @@ variable "aws_default_region" {
   type        = string
   default     = "us-east-1"
 }
-variable "enable_network" {
-  description = "Boolean flag to enable Network (VPC, subnet, IGW, NATGW, EIP) deployment"
-  type        = bool
-}
-variable "enable_eks" {
-  description = "Boolean flag to enable EKS deployment"
-  type        = bool
-}
-variable "enable_rds" {
-  description = "Boolean flag to enable RDS deployment"
-  type        = bool
-  default     = false
-}
+# variable "enable_network" {
+#   description = "Boolean flag to enable Network (VPC, subnet, IGW, NATGW, EIP) deployment"
+#   type        = bool
+# }
+# variable "enable_eks" {
+#   description = "Boolean flag to enable EKS deployment"
+#   type        = bool
+# }
+# variable "enable_rds" {
+#   description = "Boolean flag to enable RDS deployment"
+#   type        = bool
+#   default     = false
+# }
 
 
 ########################################
