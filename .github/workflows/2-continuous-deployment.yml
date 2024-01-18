@@ -78,6 +78,7 @@ jobs:
 
       - name: Manage EKS RBAC credentials
         run: |
+          aws eks update-kubeconfig --region us-east-1 --name eks-cluster
           eksctl get iamidentitymapping --cluster eks-cluster --region=us-east-1
           kubectl apply -f https://s3.us-west-2.amazonaws.com/amazon-eks/docs/eks-console-full-access.yaml
           eksctl create iamidentitymapping --cluster eks-cluster --region=us-east-1 \
