@@ -21,9 +21,12 @@ jobs:
       - name: Download plan.out
         run : | 
           echo "==> Downloading plan.out from S3 Bucket"
+          cd terraform
           aws s3api get-object --bucket alissonpdc-terraform-remote-state-bucket --key terraform-aws-infra-webapp/plan.out plan.out
 
       - name: Terraform Deploy
         run : | 
+          cd terraform
+          terraform init
           terraform apply plan.out
         
