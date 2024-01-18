@@ -8,11 +8,33 @@ permissions:
   contents: read
 
 jobs:
-  DestroyAWS:
+  TerraformPlan:
     runs-on: ubuntu-latest
     environment: terraform-aws-infra-webapp-secrets-env
     steps:
       - uses: actions/checkout@v3
+      
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-1
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE }}
+
+      - name: Terraform Plan
+        run : | 
+          cd terraform
+          terraform plan -out plan.out -input=false
+      
+      - name: Upload plan.out
+        run : | 
+          echo "==> Uploading plan.out to S3 Bucket"
+          aws s3 cp terraform/plan.out s3://alissonpdc-terraform-remote-state-bucket/terraform-aws-infra-webapp/
+
+  TerraformDestroy:
+    runs-on: ubuntu-latest
+    environment: terraform-aws-infra-webapp-secrets-env
+    steps:
+      - uses: actions/checkout@v3
+
       - uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: us-east-1
@@ -21,9 +43,12 @@ jobs:
       - name: Download plan.out
         run : | 
           echo "==> Downloading plan.out from S3 Bucket"
+          cd terraform
           aws s3api get-object --bucket alissonpdc-terraform-remote-state-bucket --key terraform-aws-infra-webapp/plan.out plan.out
 
-      - name: Terraform Destroy
+      - name: Terraform Deploy
         run : | 
+          cd terraform
+          terraform init
           terraform destroy plan.out
         

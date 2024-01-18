@@ -25,7 +25,7 @@ jobs:
           cd terraform
           tflint
 
-  ValidateAndPlan:
+  TerraformValidate:
     runs-on: ubuntu-latest
     environment: terraform-aws-infra-webapp-secrets-env
     needs: 
@@ -42,13 +42,3 @@ jobs:
           cd terraform
           terraform init -input=false
           terraform validate -no-color
-
-      - name: Terraform Plan
-        run : | 
-          cd terraform
-          terraform plan -out plan.out -input=false
-      
-      - name: Upload plan.out
-        run : | 
-          echo "==> Uploading plan.out to S3 Bucket"
-          aws s3 cp terraform/plan.out s3://alissonpdc-terraform-remote-state-bucket/terraform-aws-infra-webapp/

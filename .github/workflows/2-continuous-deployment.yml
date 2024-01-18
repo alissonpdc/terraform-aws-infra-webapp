@@ -8,11 +8,33 @@ permissions:
   contents: read
 
 jobs:
-  DeployAWS:
+  TerraformPlan:
     runs-on: ubuntu-latest
     environment: terraform-aws-infra-webapp-secrets-env
     steps:
       - uses: actions/checkout@v3
+      
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-1
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE }}
+
+      - name: Terraform Plan
+        run : | 
+          cd terraform
+          terraform plan -out plan.out -input=false
+      
+      - name: Upload plan.out
+        run : | 
+          echo "==> Uploading plan.out to S3 Bucket"
+          aws s3 cp terraform/plan.out s3://alissonpdc-terraform-remote-state-bucket/terraform-aws-infra-webapp/
+
+  TerraformApply:
+    runs-on: ubuntu-latest
+    environment: terraform-aws-infra-webapp-secrets-env
+    steps:
+      - uses: actions/checkout@v3
+
       - uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: us-east-1
