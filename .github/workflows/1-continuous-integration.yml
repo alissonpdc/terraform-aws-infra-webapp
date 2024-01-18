@@ -13,12 +13,13 @@ permissions:
 jobs:
   ValidateAndPlan:
     runs-on: ubuntu-latest
+    environment: terraform-aws-infra-webapp-secrets-env
     steps:
       - uses: actions/checkout@v3
       - uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: us-east-1
-          role-to-assume: "${{ secrets.AWS_OIDC_ROLE }}"
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE }}
 
       - name: Terraform Validate
         run : | 
