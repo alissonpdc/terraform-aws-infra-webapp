@@ -1,20 +1,20 @@
 resource "random_password" "db_password" {
-  length           = 8
-  special          = false
+  length  = 8
+  special = false
 }
 
 resource "aws_db_instance" "db_instance" {
-  allocated_storage   = 10
-  db_name             = aws_ssm_parameter.db_name
-  engine              = "postgres"
-  instance_class      = "db.t3.micro"
-  username            = aws_ssm_parameter.db_username.value
-  password            = aws_ssm_parameter.db_password.value
-  skip_final_snapshot = true
-  apply_immediately   = true
-  multi_az            = false
-  db_subnet_group_name = aws_db_subnet_group.db_subnet_group.name
-  vpc_security_group_ids = [ aws_security_group.sg_db.id ]
+  allocated_storage      = 10
+  db_name                = aws_ssm_parameter.db_name.name
+  engine                 = "postgres"
+  instance_class         = "db.t3.micro"
+  username               = aws_ssm_parameter.db_username.value
+  password               = aws_ssm_parameter.db_password.value
+  skip_final_snapshot    = true
+  apply_immediately      = true
+  multi_az               = false
+  db_subnet_group_name   = aws_db_subnet_group.db_subnet_group.name
+  vpc_security_group_ids = [aws_security_group.sg_db.id]
 }
 
 resource "aws_ssm_parameter" "db_username" {
@@ -43,7 +43,7 @@ resource "aws_ssm_parameter" "db_name" {
 
 resource "aws_db_subnet_group" "db_subnet_group" {
   name       = "db-subnet-group"
-  subnet_ids = [ for subnet in aws_subnet.subnets_private_db : subnet.id ]
+  subnet_ids = [for subnet in aws_subnet.subnets_private_db : subnet.id]
 
   tags = {
     Name = "db-subnet-group"
@@ -56,10 +56,10 @@ resource "aws_security_group" "sg_db" {
   vpc_id      = aws_vpc.vpc_app.id
 
   ingress {
-    from_port        = 5432
-    to_port          = 5432
-    security_groups = [ aws_eks_cluster.eks_cluster.vpc_config[0].cluster_security_group_id ]
-    protocol         = "TCP"
+    from_port       = 5432
+    to_port         = 5432
+    security_groups = [aws_eks_cluster.eks_cluster.vpc_config[0].cluster_security_group_id]
+    protocol        = "TCP"
   }
 
   egress {

@@ -1,0 +1,27 @@
+name: "[1] CONTINUOUS INTEGRATION"
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-1
+          role-to-assume: arn:aws:iam::211125453026:role/github-oidc-auth-Role-mVCfrIMPaYfi 
+
+      - name: Terraform Validate
+        run : | 
+          cd terraform
+          terraform init
+          terraform validate

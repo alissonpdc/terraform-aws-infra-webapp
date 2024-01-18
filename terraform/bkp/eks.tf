@@ -52,37 +52,6 @@ resource "aws_eks_node_group" "eks_node_group" {
   ]
 }
 
-resource "aws_security_group" "sg_worker_node_bastion" {
-  name        = "worker-node-bastion"
-  description = "Allow inbound traffic from Bastion Host"
-  vpc_id      = aws_vpc.vpc_app.id
-
-  ingress {
-    from_port        = 22
-    to_port          = 22
-    protocol         = "TCP"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
-
-  egress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
-
-  tags = {
-    Name = "worker-node-bastion"
-  }
-}
-
-# resource "aws_key_pair" "key_worker_node" {
-#   key_name   = "workers-key"
-#   public_key = file("./workers-key-mac.pub")
-# }
-
 #############################################
 ##  IAM ROLE FOR EKS CLUSTER
 #############################################

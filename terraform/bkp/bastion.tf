@@ -5,7 +5,7 @@ resource "aws_instance" "bastion" {
   instance_type          = "t2.micro"
   vpc_security_group_ids = [aws_security_group.sg_bastion[count.index].id]
   # key_name               = aws_key_pair.key_bastion[count.index].key_name
-  subnet_id              = aws_subnet.subnets_public["public-1a"].id
+  subnet_id = aws_subnet.subnets_public["public-1a"].id
 
   tags = {
     Name = "BastionHost"

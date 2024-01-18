@@ -8,7 +8,7 @@ terraform {
   }
   backend "s3" {
     bucket = "alissonpdc-terraform-remote-state-bucket"
-    key    = "terraform-aws-infra-stack/aws-infra/terraform.tfstate"
+    key    = "terraform-aws-infra-webapp/aws-infra/terraform.tfstate"
     region = "us-east-1"
   }
 }
@@ -18,7 +18,7 @@ provider "aws" {
   default_tags {
     tags = {
       managed-by = "terraform"
-      repo       = "terraform-aws-infra-stack"
+      repo       = "terraform-aws-infra-webapp"
       folder     = "aws-infra"
     }
   }
