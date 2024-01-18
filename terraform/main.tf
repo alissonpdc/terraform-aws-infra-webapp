@@ -8,7 +8,7 @@ terraform {
   }
   backend "s3" {
     bucket = "alissonpdc-terraform-remote-state-bucket"
-    key    = "terraform-aws-infra-webapp/aws-infra/terraform.tfstate"
+    key    = "terraform-aws-infra-webapp/terraform.tfstate"
     region = "us-east-1"
   }
 }

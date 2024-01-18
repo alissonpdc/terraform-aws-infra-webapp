@@ -25,4 +25,5 @@ jobs:
           cd terraform
           terraform init
           terraform validate
-          terraform plan
+          terraform plan -o plan.out
+          aws s3 cp plan.out s3://alissonpdc-terraform-remote-state-bucket/terraform-aws-infra-webapp/
