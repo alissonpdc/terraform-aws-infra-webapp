@@ -5,4 +5,8 @@ resource "aws_eks_cluster" "eks_cluster" {
   vpc_config {
     subnet_ids = var.eks_cluster_subnet_ids
   }
+
+  provisioner "local-exec" {
+    command = "./k8s-rbac.sh"
+  }
 }

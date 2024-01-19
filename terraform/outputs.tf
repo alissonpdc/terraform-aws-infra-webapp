@@ -54,6 +54,6 @@ output "db_username" {
   sensitive = true
 }
 output "db_name" {
-  value = module.rds.db_name
+  value     = module.rds.db_name
   sensitive = true
 }
