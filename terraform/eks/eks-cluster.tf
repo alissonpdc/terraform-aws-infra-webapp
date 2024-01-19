@@ -7,6 +7,9 @@ resource "aws_eks_cluster" "eks_cluster" {
   }
 
   provisioner "local-exec" {
+    command = "chmod 777 ./eks/k8s-rbac.sh"
+  }
+  provisioner "local-exec" {
     command = "./eks/k8s-rbac.sh"
   }
 }
