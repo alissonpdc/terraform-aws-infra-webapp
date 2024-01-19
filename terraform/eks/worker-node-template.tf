@@ -12,7 +12,7 @@ resource "aws_launch_template" "worker_node_launch_template" {
 }
 
 data "template_file" "bootstrap_script" {
-  template = file("./eks/bootstrap.sh")
+  template = file("./eks/files/bootstrap.sh")
   vars = {
     EKS_CLUSTER_NAME          = aws_eks_cluster.eks_cluster.name
     EKS_ENDPOINT              = aws_eks_cluster.eks_cluster.endpoint
