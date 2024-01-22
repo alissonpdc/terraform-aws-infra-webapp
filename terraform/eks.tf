@@ -1,4 +1,6 @@
 module "eks" {
+  # count = var.enable_eks == true ? 1 : 0
+
   source = "./eks"
 
   enable_managed_nodes      = var.enable_managed_nodes

@@ -1,4 +1,6 @@
 module "rds" {
+  # count = var.enable_rds == true ? 1 : 0
+
   source = "./rds"
 
   db_username              = var.db_username
