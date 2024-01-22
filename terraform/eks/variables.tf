@@ -1,13 +1,11 @@
 variable "enable_managed_nodes" {
   description = "Boolean flag to define whether to provision a Managed Worker Nodes or not"
   type        = bool
-  default     = false
 }
 
 variable "enable_self_managed_nodes" {
   description = "Boolean flag to define whether to provision a Self Managed Worker Nodes or not"
   type        = bool
-  default     = false
 }
 
 variable "eks_cluster_subnet_ids" {
@@ -23,7 +21,11 @@ variable "worker_node_ami" {
 
 variable "worker_node_type" {
   description = "EC2 Instance Type"
-  default     = "t2.micro"
+  type        = string
+}
+
+variable "worker_node_option" {
+  description = "Worker Node purchase option [ SPOT / ON_DEMAND ]"
   type        = string
 }
 
@@ -35,9 +37,9 @@ variable "worker_node_subnet_ids" {
 variable "worker_node_capacity" {
   description = "Map to represent Worker Node capacity"
   type        = map(number)
-  default = {
-    desired_size = 2
-    max_size     = 2
-    min_size     = 2
-  }
+}
+
+variable "role_sso_identity_center" {
+  description = "Role created by SSO Identity Center (users will be able to manage eks cluster)"
+  type        = string
 }

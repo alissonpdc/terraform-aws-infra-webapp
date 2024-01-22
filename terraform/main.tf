@@ -5,6 +5,10 @@ terraform {
       source  = "hashicorp/aws"
       version = "5.31.0"
     }
+    kubectl = {
+      source  = "gavinbunney/kubectl"
+      version = "1.14.0"
+    }
   }
   backend "s3" {
     bucket = "alissonpdc-terraform-remote-state-bucket"
@@ -20,6 +24,31 @@ provider "aws" {
       managed-by = "terraform"
       repo       = "terraform-aws-infra-webapp"
       folder     = "aws-infra"
+    }
+  }
+}
+
+provider "kubectl" {
+  apply_retry_count      = 5
+  host                   = module.eks.eks_cluster_endpoint
+  cluster_ca_certificate = base64decode(module.eks.eks_cluster_certificate_authority)
+  load_config_file       = false
+
+  exec {
+    api_version = "client.authentication.k8s.io/v1beta1"
+    args        = ["eks", "get-token", "--cluster-name", module.eks.eks_cluster_name]
+    command     = "aws"
+  }
+}
+
+provider "helm" {
+  kubernetes {
+    host                   = module.eks.eks_cluster_endpoint
+    cluster_ca_certificate = base64decode(module.eks.eks_cluster_certificate_authority)
+    exec {
+      api_version = "client.authentication.k8s.io/v1beta1"
+      args        = ["eks", "get-token", "--cluster-name", module.eks.eks_cluster_name]
+      command     = "aws"
     }
   }
 }

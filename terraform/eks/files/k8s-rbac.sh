@@ -11,12 +11,12 @@ kubectl apply -f ./eks/files/eks-full-access.yaml
 
 echo "==> Adding new role to auth-map"
 eksctl create iamidentitymapping --cluster eks-cluster --region=us-east-1 \
---arn arn:aws:iam::211125453026:role/AWSReservedSSO_AdministratorAccess_018645c6c1d0e0fc \
+--arn arn:aws:iam::${AWS_ACCOUNT_ID}:role/${ROLE_IDENTITY_CENTER} \
 --username "{{SessionName}}" --group eks-full-access-group --no-duplicate-arns
 
 echo "==> Adding new user to auth-map"
 eksctl create iamidentitymapping --cluster eks-cluster --region=us-east-1 \
---arn arn:aws:iam::211125453026:user/console \
+--arn arn:aws:iam::${AWS_ACCOUNT_ID}:user/console \
 --username admin --group eks-full-access-group --no-duplicate-arns
 
 echo "==> Printing updated auth-map"
