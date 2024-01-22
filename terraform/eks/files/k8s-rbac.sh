@@ -19,6 +19,11 @@ eksctl create iamidentitymapping --cluster eks-cluster --region=us-east-1 \
 --arn arn:aws:iam::${AWS_ACCOUNT_ID}:user/console \
 --username admin --group eks-full-access-group --no-duplicate-arns
 
+echo "==> Adding new user to auth-map"
+eksctl create iamidentitymapping --cluster eks-cluster --region=us-east-1 \
+--arn arn:aws:iam::${AWS_ACCOUNT_ID}:role/github-oidc-auth-Role-mVCfrIMPaYfi \
+--username admin --group eks-full-access-group --no-duplicate-arns
+
 echo "==> Printing updated auth-map"
 eksctl get iamidentitymapping --cluster eks-cluster --region=us-east-1
 
