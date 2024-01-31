@@ -1,6 +1,4 @@
 module "network" {
-  # count = var.enable_network == true ? 1 : 0
-
   source = "./network"
 
   enable_nat_gateway  = var.enable_nat_gateway

@@ -49,11 +49,11 @@ resource "aws_eks_cluster" "eks_cluster" {
     command = "cat auth-map >> tmp.sh && chmod +x tmp.sh && ./tmp.sh && rm -f auth-map tmp.sh"
   }
 
-  depends_on = [ 
+  depends_on = [
     data.template_file.rbac_auth_map,
     data.template_file.rbac_deploy,
     terraform_data.auth_map
-   ]
+  ]
 }
 
 # Assume role trust policy

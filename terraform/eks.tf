@@ -1,6 +1,4 @@
 module "eks" {
-  # count = var.enable_eks == true ? 1 : 0
-
   source = "./eks"
 
   enable_managed_nodes      = var.enable_managed_nodes
@@ -8,7 +6,7 @@ module "eks" {
 
   eks_cluster_name     = var.eks_cluster_name
   eks_master_version   = var.eks_master_version
-  eks_auth_map = var.eks_auth_map
+  eks_auth_map         = var.eks_auth_map
   worker_node_type     = var.worker_node_type
   worker_node_capacity = var.worker_node_capacity
   worker_node_option   = var.worker_node_option

@@ -1,13 +1,10 @@
 ########################################
 ##       ENABLE TOGGLE FEATURES       ##
 ########################################
-# enable_network            = true
-enable_nat_gateway  = false
-enable_nat_instance = true
-# enable_eks                = true
+enable_nat_gateway        = false
+enable_nat_instance       = true
 enable_managed_nodes      = true
 enable_self_managed_nodes = false
-# enable_rds                = true
 
 
 ########################################

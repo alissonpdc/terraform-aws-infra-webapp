@@ -115,7 +115,7 @@ variable "eks_master_version" {
 variable "eks_auth_map" {
   description = "List of objects to add in EKS's auth-map configmap"
   type = list(object({
-    role = string
+    role     = string
     username = string
   }))
 }
