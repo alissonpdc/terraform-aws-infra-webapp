@@ -30,7 +30,7 @@ resource "aws_subnet" "subnets_private_db" {
 resource "aws_route_table" "route_tables_private_app" {
   for_each = {
     for k, v in var.subnets_private_app : k => v
-    if var.enable_nat_gateway == true
+    if(var.enable_nat_gateway == true || var.enable_nat_instance == true)
   }
 
   vpc_id = aws_vpc.vpc_app.id
@@ -39,8 +39,9 @@ resource "aws_route_table" "route_tables_private_app" {
   }
 
   route {
-    cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.ngws_app["public-${split("-", each.key)[2]}"].id
+    cidr_block           = "0.0.0.0/0"
+    nat_gateway_id       = var.enable_nat_gateway == true ? aws_nat_gateway.ngws_app["public-${split("-", each.key)[2]}"].id : null
+    network_interface_id = var.enable_nat_instance == true ? aws_instance.nat_instance["public-${split("-", each.key)[2]}"].primary_network_interface_id : null
   }
 }
 
@@ -48,7 +49,7 @@ resource "aws_route_table" "route_tables_private_app" {
 resource "aws_route_table_association" "route_table_associations_private" {
   for_each = {
     for k, v in var.subnets_private_app : k => v
-    if var.enable_nat_gateway == true
+    if(var.enable_nat_gateway == true || var.enable_nat_instance == true)
   }
 
   subnet_id      = aws_subnet.subnets_private_app[each.key].id

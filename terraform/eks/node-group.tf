@@ -1,9 +1,26 @@
+# Search for Ubuntu for EKS AMI ID (based on variable eks_version)
+data "aws_ami" "ami_ubuntu_eks" {
+  most_recent = true
+  name_regex  = "ubuntu-eks/k8s_"
+  owners      = ["aws-marketplace"]
+
+  filter {
+    name   = "name"
+    values = ["*${var.eks_master_version}*"]
+  }
+
+  filter {
+    name   = "architecture"
+    values = ["*x86_64*"]
+  }
+}
+
 # Create launch template for worker nodes
 resource "aws_launch_template" "worker_node_launch_template" {
   count = (var.enable_managed_nodes == true || var.enable_self_managed_nodes == true) ? 1 : 0
 
   name          = "eks-launch-template"
-  image_id      = var.worker_node_ami
+  image_id      = data.aws_ami.ami_ubuntu_eks.image_id
   instance_type = var.worker_node_type
   user_data     = base64encode(data.template_file.bootstrap_script.rendered)
 
@@ -41,6 +58,10 @@ resource "aws_eks_node_group" "eks_node_group" {
     desired_size = var.worker_node_capacity.desired_size
     max_size     = var.worker_node_capacity.max_size
     min_size     = var.worker_node_capacity.min_size
+  }
+
+  timeouts {
+    create = "15m"
   }
 }
 

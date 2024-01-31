@@ -1,6 +1,6 @@
 resource "aws_iam_policy" "elb_controller_policy" {
   name        = "AWSLoadBalancerControllerIAMPolicy"
-  description = "My test policy"
+  description = "Policy for ELB Controller on EKS"
   policy      = file("./eks/files/elb-controller-policy.json")
 }
 
@@ -29,9 +29,15 @@ resource "aws_iam_role" "elb_controller_role" {
   tags = {
     Name = "eks-elb-controller-role"
   }
+
+  lifecycle {
+    replace_triggered_by = [aws_iam_policy.elb_controller_policy]
+  }
 }
 
 resource "kubectl_manifest" "elb_controller_serviceaccount" {
+  depends_on = [aws_eks_node_group.eks_node_group]
+
   yaml_body = <<YAML
 apiVersion: v1
 kind: ServiceAccount
@@ -47,6 +53,11 @@ YAML
 }
 
 resource "helm_release" "aws_elb_controller" {
+  depends_on = [
+    aws_eks_node_group.eks_node_group,
+    aws_iam_role.elb_controller_role
+  ]
+
   name       = "aws-load-balancer-controller"
   repository = "https://aws.github.io/eks-charts"
   chart      = "aws-load-balancer-controller"

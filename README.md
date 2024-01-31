@@ -16,6 +16,8 @@ This project will provide the infrastructure for the [python-simple-web-app](htt
 
 ![Architecture](docs/architecture.png)
 
+![CI/CD](docs/cicd.png)
+
 
 ## Introduction
 ### 3-tier architecture

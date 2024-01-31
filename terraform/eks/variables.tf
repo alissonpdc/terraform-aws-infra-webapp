@@ -8,15 +8,27 @@ variable "enable_self_managed_nodes" {
   type        = bool
 }
 
+variable "eks_cluster_name" {
+  description = "EKS cluster name"
+  type        = string
+}
+
 variable "eks_cluster_subnet_ids" {
   description = "List of subnet IDs for EKS Master Node"
   type        = list(string)
 }
 
-variable "worker_node_ami" {
-  description = "EC2 AMI ID"
-  default     = "ami-0ea6ebeab50b26cee"
+variable "eks_master_version" {
+  description = "EKS Master version"
   type        = string
+}
+
+variable "eks_auth_map" {
+  description = "List of objects to add in EKS's auth-map configmap"
+  type = list(object({
+    role = string
+    username = string
+  }))
 }
 
 variable "worker_node_type" {
@@ -37,9 +49,4 @@ variable "worker_node_subnet_ids" {
 variable "worker_node_capacity" {
   description = "Map to represent Worker Node capacity"
   type        = map(number)
-}
-
-variable "role_sso_identity_center" {
-  description = "Role created by SSO Identity Center (users will be able to manage eks cluster)"
-  type        = string
 }

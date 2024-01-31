@@ -31,7 +31,10 @@ variable "enable_nat_gateway" {
   description = "Boolean flag to define whether deploy NAT GWs or not"
   type        = bool
 }
-
+variable "enable_nat_instance" {
+  description = "Boolean flag to define whether deploy NAT Instances or not"
+  type        = bool
+}
 
 ########################################
 ##           NETWORK VARIABLES        ##
@@ -100,10 +103,21 @@ variable "subnets_private_db" {
 ########################################
 ##             EKS VARIABLES          ##
 ########################################
-variable "worker_node_ami" {
-  description = "EC2 AMI ID"
+variable "eks_cluster_name" {
+  description = "EKS cluster name"
   type        = string
-  default     = "ami-0ea6ebeab50b26cee"
+}
+variable "eks_master_version" {
+  description = "EKS Master version"
+  type        = string
+  default     = ""
+}
+variable "eks_auth_map" {
+  description = "List of objects to add in EKS's auth-map configmap"
+  type = list(object({
+    role = string
+    username = string
+  }))
 }
 variable "worker_node_type" {
   description = "EC2 Instance Type"
@@ -120,10 +134,6 @@ variable "worker_node_capacity" {
 }
 variable "worker_node_option" {
   description = "Worker Node purchase option [ SPOT / ON_DEMAND ]"
-  type        = string
-}
-variable "role_sso_identity_center" {
-  description = "Role created by SSO Identity Center (users will be able to manage eks cluster)"
   type        = string
 }
 

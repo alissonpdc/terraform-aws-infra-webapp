@@ -32,7 +32,12 @@ output "eks_cluster_certificate_authority" {
 output "eks_security_group_id" {
   value = module.eks.eks_security_group_id
 }
-
+output "eks_version" {
+  value = module.eks.eks_version
+}
+output "eks_worker_node_ami" {
+  value = module.eks.eks_worker_node_ami
+}
 
 ########################################
 ##               RDS OUPUT            ##
